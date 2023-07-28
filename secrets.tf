@@ -8,7 +8,7 @@ resource "random_string" "tls" {
 resource "aws_secretsmanager_secret" "tls" {
   name                    = "${var.resource_name_prefix}${random_string.tls.result}tls-secret"
   description             = "contains TLS certs and private keys"
-  kms_key_id              = aws_kms_key.vault[0].key_id
+  kms_key_id              =  var.kms_key_arn != null? var.kms_key_arn : aws_kms_key.vault[0].arn,
 }
 
 # The actual value of the self-signed TLS
